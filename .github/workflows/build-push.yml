@@ -24,5 +24,5 @@ jobs:
         uses: chainguard-images/actions/apko-publish@711a62d32118ee565db9c24249fc90011bdd7eb4  # v1.0.0
         with:
           archs: x86_64
-          tag: ${{ github.repository_owner }}/${{ github.repository }}:latest
+          tag: ${{ github.repository }}:latest
 ...
