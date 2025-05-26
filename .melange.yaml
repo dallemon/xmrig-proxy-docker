@@ -7,8 +7,7 @@ package:
   target-architecture:
     - x86_64
   copyright:
-    - attestation: |
-        Copyright 2007-2025 Free Software Foundation, Inc.
+    - attestation: Copyright 2007-2025 Free Software Foundation, Inc.
       license: GPL-3.0-or-later
 
 environment:
@@ -48,4 +47,15 @@ pipeline:
       mkdir -p "${{targets.destdir}}"/usr/bin
       cp -a /home/build/output/xmrig-proxy ${{targets.destdir}}/usr/bin/xmrig-proxy
   - uses: strip
+
+test:
+  pipeline:
+    - runs: |
+        xmrig-proxy --version
+
+update:
+  enabled: true
+  github:
+    identifier: xmrig/xmrig-proxy
+    strip-prefix: v
 ...
