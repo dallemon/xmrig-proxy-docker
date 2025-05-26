@@ -1,0 +1,60 @@
+---
+package:
+  name: xmrig-proxy
+  version: 6.22.0
+  epoch: 0
+  description: "Monero (XMR) Stratum protocol proxy"
+  target-architecture:
+    - aarch64
+    - armhf
+    - armv7
+    - loongarch64
+    - mips64
+    - ppc64le
+    - riscv64
+    - s390x
+    - x86
+    - x86_64
+  copyright:
+    - attestation: |
+        Copyright 2007-2025 Free Software Foundation, Inc.
+      license: GPL-3.0-or-later
+
+environment:
+  contents:
+    repositories:
+      - https://dl-cdn.alpinelinux.org/alpine/edge/main
+    packages:
+      - busybox
+      - clang
+      - cmake
+      - libuv-dev
+      - libuv-static
+      - llvm
+      - lld
+      - openssl-dev
+      - openssl-libs-static
+      - samurai
+
+pipeline:
+  - uses: git-checkout
+    with:
+      repository: https://github.com/xmrig/xmrig-proxy.git
+      tag: v${{package.version}}
+      expected-commit: 501d9722454e20de90ed205e26da8cbf304c2ac8
+  - uses: cmake/configure
+    with:
+      opts: |
+        -GNinja \
+        -DBUILD_STATIC=ON \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_COMPILER=clang \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld -static -static-libgcc -static-libstdc++" \
+        -DOPENSSL_USE_STATIC_LIBS=ON
+  - uses: cmake/build
+  - runs: |
+      mkdir -p "${{targets.destdir}}"/usr/bin
+      cp -a /home/build/output/xmrig-proxy ${{targets.destdir}}/usr/bin/xmrig-proxy
+  - uses: strip
+...
