@@ -18,8 +18,11 @@ jobs:
       - name: generate melange temporary key
         uses: chainguard-dev/actions/melange-keygen@ce51233d303aed2394a9976e7f5642fd2158f693  # v1.1.1
       - uses: chainguard-dev/actions/melange-build-pkg@ce51233d303aed2394a9976e7f5642fd2158f693  # v1.1.1
+        with:
+          archs: x86_64
       - name: build container
         uses: chainguard-images/actions/apko-publish@711a62d32118ee565db9c24249fc90011bdd7eb4  # v1.0.0
         with:
+          archs: x86_64
           tag: ${{ github.repository_owner }}/${{ github.repository }}:latest
 ...
